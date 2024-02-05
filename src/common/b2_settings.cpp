@@ -30,16 +30,23 @@
 b2Version b2_version = {2, 4, 1};
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc_Default(int32 size)
+void* b2Alloc_Default(void* /*ctx*/, int32 size)
 {
 	return malloc(size);
 }
 
-void b2Free_Default(void* mem)
+void b2Free_Default(void* /*ctx*/, void* mem, int32 size)
 {
 	free(mem);
 }
 
+void b2SetAllocator(b2Allocator* allocator) { 
+	globalAllocator = allocator;
+}
+
+b2Allocator defaultAllocator = { b2Alloc_Default, b2Free_Default };
+b2Allocator* globalAllocator = &defaultAllocator;
+ 
 // You can modify this to use your logging facility.
 void b2Log_Default(const char* string, va_list args)
 {

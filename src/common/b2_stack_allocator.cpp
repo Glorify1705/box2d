@@ -69,7 +69,7 @@ void b2StackAllocator::Free(void* p)
 	b2Assert(p == entry->data);
 	if (entry->usedMalloc)
 	{
-		b2Free(p);
+		b2Free(p, entry->size);
 	}
 	else
 	{

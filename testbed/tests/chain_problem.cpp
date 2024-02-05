@@ -77,8 +77,8 @@ public:
                     bodies[1]->CreateFixture(&fd);
                 }
             }
-            b2Free(joints);
-            b2Free(bodies);
+            b2Free(joints, 0 * sizeof(b2Joint*));
+            b2Free(bodies, 2 * sizeof(b2Body*));
             joints = NULL;
             bodies = NULL;
         }

@@ -93,19 +93,29 @@ struct B2_API b2JointUserData
 // Memory Allocation
 
 /// Default allocation functions
-B2_API void* b2Alloc_Default(int32 size);
-B2_API void b2Free_Default(void* mem);
+B2_API void* b2Alloc_Default(void* ctx, int32 size);
+B2_API void b2Free_Default(void* ctx, void* mem, int32 size);
+
+struct b2Allocator {
+	void* (*Alloc)(void* ctx, int32 size);
+	void (*Free)(void* ctx, void* mem, int32 size);
+	void* ctx;
+};
+
+extern b2Allocator* globalAllocator;
+
+void b2SetAllocator(b2Allocator* allocator);
 
 /// Implement this function to use your own memory allocator.
 inline void* b2Alloc(int32 size)
 {
-	return b2Alloc_Default(size);
+	return globalAllocator->Alloc(globalAllocator->ctx, size);
 }
 
 /// If you implement b2Alloc, you should also implement this function.
-inline void b2Free(void* mem)
+inline void b2Free(void* mem, int32 size)
 {
-	b2Free_Default(mem);
+	globalAllocator->Free(globalAllocator->ctx, mem, size);
 }
 
 /// Default logging function

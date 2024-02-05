@@ -65,13 +65,13 @@ b2Rope::b2Rope()
 
 b2Rope::~b2Rope()
 {
-	b2Free(m_stretchConstraints);
-	b2Free(m_bendConstraints);
-	b2Free(m_bindPositions);
-	b2Free(m_ps);
-	b2Free(m_p0s);
-	b2Free(m_vs);
-	b2Free(m_invMasses);
+	b2Free(m_stretchConstraints, m_stretchCount * sizeof(b2RopeStretch));
+	b2Free(m_bendConstraints, m_bendCount * sizeof(b2RopeBend));
+	b2Free(m_bindPositions, m_count * sizeof(b2Vec2));
+	b2Free(m_ps, m_count * sizeof(b2Vec2));
+	b2Free(m_p0s, m_count * sizeof(b2Vec2));
+	b2Free(m_vs, m_count * sizeof(b2Vec2));
+	b2Free(m_invMasses, m_count * sizeof(float));
 }
 
 void b2Rope::Create(const b2RopeDef& def)

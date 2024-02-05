@@ -47,7 +47,7 @@ b2DynamicTree::b2DynamicTree()
 b2DynamicTree::~b2DynamicTree()
 {
 	// This frees the entire tree in one shot.
-	b2Free(m_nodes);
+	b2Free(m_nodes, m_nodeCapacity * sizeof(b2TreeNode));
 }
 
 // Allocate a node from the pool. Grow the pool if necessary.
@@ -60,10 +60,11 @@ int32 b2DynamicTree::AllocateNode()
 
 		// The free list is empty. Rebuild a bigger pool.
 		b2TreeNode* oldNodes = m_nodes;
+		int32 oldNodeCapacity = m_nodeCapacity;
 		m_nodeCapacity *= 2;
 		m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
 		memcpy(m_nodes, oldNodes, m_nodeCount * sizeof(b2TreeNode));
-		b2Free(oldNodes);
+		b2Free(oldNodes, oldNodeCapacity);
 
 		// Build a linked list for the free list. The parent
 		// pointer becomes the "next" pointer.
@@ -785,7 +786,7 @@ void b2DynamicTree::RebuildBottomUp()
 	}
 
 	m_root = nodes[0];
-	b2Free(nodes);
+	b2Free(nodes, m_nodeCapacity * sizeof(int32));
 
 	Validate();
 }

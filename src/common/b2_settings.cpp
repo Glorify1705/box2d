@@ -30,7 +30,7 @@
 b2Version b2_version = {2, 4, 1};
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc_Default(void* /*ctx*/, int32 size)
+void* b2Alloc_Default(void* /*ctx*/, int32 size, int32 /*alignment*/)
 {
 	return malloc(size);
 }

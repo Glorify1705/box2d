@@ -79,11 +79,11 @@ void b2Rope::Create(const b2RopeDef& def)
 	b2Assert(def.count >= 3);
 	m_position = def.position;
 	m_count = def.count;
-	m_bindPositions = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-	m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-	m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-	m_vs = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
-	m_invMasses = (float*)b2Alloc(m_count * sizeof(float));
+	m_bindPositions = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2), alignof(b2Vec2));
+	m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2), alignof(b2Vec2));
+	m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2), alignof(b2Vec2));
+	m_vs = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2), alignof(b2Vec2));
+	m_invMasses = (float*)b2Alloc(m_count * sizeof(float), alignof(b2Vec2));
 
 	for (int32 i = 0; i < m_count; ++i)
 	{
@@ -106,8 +106,8 @@ void b2Rope::Create(const b2RopeDef& def)
 	m_stretchCount = m_count - 1;
 	m_bendCount = m_count - 2;
 
-	m_stretchConstraints = (b2RopeStretch*)b2Alloc(m_stretchCount * sizeof(b2RopeStretch));
-	m_bendConstraints = (b2RopeBend*)b2Alloc(m_bendCount * sizeof(b2RopeBend));
+	m_stretchConstraints = (b2RopeStretch*)b2Alloc(m_stretchCount * sizeof(b2RopeStretch), alignof(b2RopeStretch));
+	m_bendConstraints = (b2RopeBend*)b2Alloc(m_bendCount * sizeof(b2RopeBend), alignof(b2RopeStretch));
 
 	for (int32 i = 0; i < m_stretchCount; ++i)
 	{

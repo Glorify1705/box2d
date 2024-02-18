@@ -21,6 +21,8 @@
 // SOFTWARE.
 
 #include "box2d/b2_block_allocator.h"
+
+#include <cstddef>
 #include <limits.h>
 #include <string.h>
 #include <stddef.h>
@@ -92,7 +94,7 @@ b2BlockAllocator::b2BlockAllocator()
 
 	m_chunkSpace = b2_chunkArrayIncrement;
 	m_chunkCount = 0;
-	m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk));
+	m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk), alignof(b2Chunk));
 	
 	memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
 	memset(m_freeLists, 0, sizeof(m_freeLists));
@@ -119,7 +121,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 
 	if (size > b2_maxBlockSize)
 	{
-		return b2Alloc(size);
+		return b2Alloc(size, alignof(std::max_align_t));
 	}
 
 	int32 index = b2_sizeMap.values[size];
@@ -138,14 +140,14 @@ void* b2BlockAllocator::Allocate(int32 size)
 			b2Chunk* oldChunks = m_chunks;
 			int32 oldSpace = m_chunkSpace;
 			m_chunkSpace += b2_chunkArrayIncrement;
-			m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk));
+			m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk), alignof(b2Chunk));
 			memcpy(m_chunks, oldChunks, m_chunkCount * sizeof(b2Chunk));
 			memset(m_chunks + m_chunkCount, 0, b2_chunkArrayIncrement * sizeof(b2Chunk));
 			b2Free(oldChunks, oldSpace * sizeof(b2Chunk));
 		}
 
 		b2Chunk* chunk = m_chunks + m_chunkCount;
-		chunk->blocks = (b2Block*)b2Alloc(b2_chunkSize);
+		chunk->blocks = (b2Block*)b2Alloc(b2_chunkSize, alignof(std::max_align_t));
 #if defined(_DEBUG)
 		memset(chunk->blocks, 0xcd, b2_chunkSize);
 #endif

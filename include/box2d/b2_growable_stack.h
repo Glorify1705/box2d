@@ -55,7 +55,7 @@ public:
 		if (m_count == m_capacity)
 		{
 			T* old = m_stack;
-			m_stack = (T*)b2Alloc(2 * m_capacity * sizeof(T));
+			m_stack = (T*)b2Alloc(2 * m_capacity * sizeof(T), alignof(T));
 			memcpy(m_stack, old, m_count * sizeof(T));
 			if (old != m_array)
 			{

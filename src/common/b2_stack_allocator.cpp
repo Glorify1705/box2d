@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cstddef>
+
 #include "box2d/b2_stack_allocator.h"
 #include "box2d/b2_math.h"
 
@@ -45,7 +47,7 @@ void* b2StackAllocator::Allocate(int32 size)
 	entry->size = size;
 	if (m_index + size > b2_stackSize)
 	{
-		entry->data = (char*)b2Alloc(size);
+		entry->data = (char*)b2Alloc(size, alignof(std::max_align_t));
 		entry->usedMalloc = true;
 	}
 	else

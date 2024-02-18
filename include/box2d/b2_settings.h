@@ -97,7 +97,7 @@ B2_API void* b2Alloc_Default(void* ctx, int32 size);
 B2_API void b2Free_Default(void* ctx, void* mem, int32 size);
 
 struct b2Allocator {
-	void* (*Alloc)(void* ctx, int32 size);
+	void* (*Alloc)(void* ctx, int32 size, int32 alignment);
 	void (*Free)(void* ctx, void* mem, int32 size);
 	void* ctx;
 };
@@ -106,13 +106,11 @@ extern b2Allocator* globalAllocator;
 
 void b2SetAllocator(b2Allocator* allocator);
 
-/// Implement this function to use your own memory allocator.
-inline void* b2Alloc(int32 size)
+inline void* b2Alloc(int32 size, int32 alignment)
 {
-	return globalAllocator->Alloc(globalAllocator->ctx, size);
+	return globalAllocator->Alloc(globalAllocator->ctx, size, alignment);
 }
 
-/// If you implement b2Alloc, you should also implement this function.
 inline void b2Free(void* mem, int32 size)
 {
 	globalAllocator->Free(globalAllocator->ctx, mem, size);

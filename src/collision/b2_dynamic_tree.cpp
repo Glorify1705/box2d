@@ -28,7 +28,7 @@ b2DynamicTree::b2DynamicTree()
 
 	m_nodeCapacity = 16;
 	m_nodeCount = 0;
-	m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
+	m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode), alignof(b2TreeNode));
 	memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
 
 	// Build a linked list for the free list.
@@ -62,7 +62,7 @@ int32 b2DynamicTree::AllocateNode()
 		b2TreeNode* oldNodes = m_nodes;
 		int32 oldNodeCapacity = m_nodeCapacity;
 		m_nodeCapacity *= 2;
-		m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
+		m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode), alignof(b2TreeNode));
 		memcpy(m_nodes, oldNodes, m_nodeCount * sizeof(b2TreeNode));
 		b2Free(oldNodes, oldNodeCapacity);
 
@@ -717,7 +717,7 @@ int32 b2DynamicTree::GetMaxBalance() const
 
 void b2DynamicTree::RebuildBottomUp()
 {
-	int32* nodes = (int32*)b2Alloc(m_nodeCount * sizeof(int32));
+	int32* nodes = (int32*)b2Alloc(m_nodeCount * sizeof(int32), alignof(int32));
 	int32 count = 0;
 
 	// Build array of leaves. Free the rest.

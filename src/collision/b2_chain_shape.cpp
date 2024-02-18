@@ -58,7 +58,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
 	}
 
 	m_count = count + 1;
-	m_vertices = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
+	m_vertices = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2), alignof(b2Vec2));
 	memcpy(m_vertices, vertices, count * sizeof(b2Vec2));
 	m_vertices[count] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
@@ -76,7 +76,7 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, int32 count,	const b2Vec2
 	}
 
 	m_count = count;
-	m_vertices = (b2Vec2*)b2Alloc(count * sizeof(b2Vec2));
+	m_vertices = (b2Vec2*)b2Alloc(count * sizeof(b2Vec2), alignof(b2Vec2));
 	memcpy(m_vertices, vertices, m_count * sizeof(b2Vec2));
 
 	m_prevVertex = prevVertex;

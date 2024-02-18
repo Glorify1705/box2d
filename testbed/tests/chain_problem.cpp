@@ -32,7 +32,7 @@ public:
             b2Vec2 g(0.0f, -10.0f);
             m_world->SetGravity(g);
             b2Body** bodies = (b2Body**)b2Alloc(2 * sizeof(b2Body*), alignof(b2Body*));
-            b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*), alignof(b2Body*));
+            b2Joint** joints = (b2Joint**)b2Alloc(0 * sizeof(b2Joint*), alignof(b2Body*)); 
             {
                 b2BodyDef bd;
                 bd.type = b2BodyType(0);

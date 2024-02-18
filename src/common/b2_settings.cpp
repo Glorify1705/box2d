@@ -48,8 +48,9 @@ b2Allocator defaultAllocator = { b2Alloc_Default, b2Free_Default };
 b2Allocator* globalAllocator = &defaultAllocator;
  
 // You can modify this to use your logging facility.
-void b2Log_Default(const char* string, va_list args)
+void b2Log_Default(const char* file, int line, const char* string, va_list args)
 {
+	printf("[%s:%d] ", file, line);
 	vprintf(string, args);
 }
 

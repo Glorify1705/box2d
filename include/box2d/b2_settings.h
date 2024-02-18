@@ -117,16 +117,18 @@ inline void b2Free(void* mem, int32 size)
 }
 
 /// Default logging function
-B2_API void b2Log_Default(const char* string, va_list args);
+B2_API void b2Log_Default(const char* file, int line, const char* string, va_list args);
 
 /// Implement this to use your own logging.
-inline void b2Log(const char* string, ...)
+inline void b2Log(const char* file, int line, const char* string, ...)
 {
 	va_list args;
 	va_start(args, string);
-	b2Log_Default(string, args);
+	b2Log_Default(file, line, string, args);
 	va_end(args);
 }
+
+#define B2LOG(str, ...) b2Log(__FILE__, __LINE__, str, ## __VA_ARGS__)
 
 #endif // B2_USER_SETTINGS
 

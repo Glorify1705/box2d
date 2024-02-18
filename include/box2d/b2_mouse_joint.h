@@ -95,7 +95,7 @@ public:
 	float GetDamping() const { return m_damping; }
 
 	/// The mouse joint does not support dumping.
-	void Dump() override { b2Log("Mouse joint dumping is not supported.\n"); }
+	void Dump() override { B2LOG("Mouse joint dumping is not supported.\n"); }
 
 	/// Implement b2Joint::ShiftOrigin
 	void ShiftOrigin(const b2Vec2& newOrigin) override;
